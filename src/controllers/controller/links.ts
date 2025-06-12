@@ -34,7 +34,8 @@ export class links {
                 throw new Error("User name is required")
             }
             const linksWithUsername = await services.link.getLinksthroughUserName(userName)
-            if (linksWithUsername) {
+            console.log("link with username >>> ", linksWithUsername)
+            if (!linksWithUsername) {
                 throw new Error(ErrorTypes.USER_NOT_FOUND)
             }
             return successResponse(res, 200, "Links you user with username fetched successfully", linksWithUsername)
