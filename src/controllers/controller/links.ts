@@ -19,7 +19,8 @@ export class links {
     static getAllUserLinks: any = async (req: Request, res: Response) => {
         try {
             const userId = req["user"]["userId"]
-            const userLinks = await services.link.getAllUserLinks()
+            const userLinks = await services.link.getAllUserLinks(userId)
+            return successResponse(res, 200, "All User links fetched successfully", userLinks)
         } catch (error) {
             return handleError(res, error)
         }

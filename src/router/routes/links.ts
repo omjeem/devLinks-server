@@ -19,6 +19,7 @@ linkRouter.get(
 
 linkRouter.get(
     "/",
+    authMiddleware,
     controllers.links.getAllUserLinks
 )
 

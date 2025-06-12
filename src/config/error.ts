@@ -30,7 +30,7 @@ export const ErrorMessages: Record<ErrorTypes, { message: string; statusCode: nu
         statusCode: 400,
     },
     [ErrorTypes.USER_ALREADY_EXISTS]: {
-        message: 'User Already exists',
+        message: 'User with this email is Already exists',
         statusCode: 400,
     },
     [ErrorTypes.INVALID_PASSWORD]: {
