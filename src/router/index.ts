@@ -22,7 +22,7 @@ routes.forEach((route) => {
 })
 
 router.get("/", (req: Request, res: Response): any => {
-    return successResponse(res, 200, "Welcome to Lit Reg Api")
+    return successResponse(res, 200, "Welcome to Dev Links Api")
 })
 
 
