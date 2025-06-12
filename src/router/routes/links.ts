@@ -1,9 +1,10 @@
 import express from "express"
-import { validateRequest } from "../../middlewares/validateRequest"
+import { authMiddleware, validateRequest } from "../../middlewares/validateRequest"
 import { validators } from "../../validators.ts"
+import controllers from "../../controllers"
 
 const linkRouter = express.Router()
 
-linkRouter.post("/link", validateRequest(validators.links.addLinks))
+linkRouter.post("/", authMiddleware, validateRequest(validators.links.addLinks), controllers.links.addLinks)
 
 export default linkRouter

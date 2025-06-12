@@ -40,5 +40,3 @@ export const envConfig = {
     }
 }
 
-console.log(envConfig)
-

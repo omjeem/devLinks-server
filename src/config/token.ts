@@ -8,12 +8,12 @@ enum TokenTypes {
     REFRESH = 'refresh',
 }
 
-export const generateAuthTokens = (payload: { userId: string }) => {
+export const generateAuthTokens = (payload: { userId: string, userName: string }) => {
     const jwtPayLoad = {
         userId: payload.userId,
+        userName: payload.userName,
         type: TokenTypes.ACCESS,
     }
-    console.log(jwtPayLoad)
     const accessToken = jwt.sign(
         jwtPayLoad,
         envConfig.jwt.secret,

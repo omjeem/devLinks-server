@@ -29,7 +29,10 @@ export class auth {
         if (!user.password) {
             throwError(ErrorTypes.PASSWORD_NOT_FOUND)
         }
-        await validatePassword(password, user.password)
+        const isValid = await validatePassword(password, user.password)
+        if (!isValid) {
+            throw new Error("Invalid password")
+        }
         return this.userDetails(user)
     }
 
@@ -49,7 +52,7 @@ export class auth {
                 .onConflictDoNothing({ target: users.email })
                 .returning({
                     id: users.id,
-                    name : users.name,
+                    name: users.name,
                     userName: users.userName,
                     email: users.email,
                 });
@@ -59,13 +62,13 @@ export class auth {
     };
 
     static userDetails = (users: UsersModal) => {
-        const Token = generateAuthTokens({ userId: users.id });
+        const token = generateAuthTokens({ userId: users.id, userName: users.userName });
         return {
             userId: users.id,
             email: users.email,
             userName: users.userName,
-            name : users.name,
-            token: Token,
+            name: users.name,
+            token
         };
     };
 
@@ -82,7 +85,7 @@ export class auth {
             if (registerUser.length <= 0) throwError(ErrorTypes.USER_ALREADY_EXISTS);
             console.log("Sign method password ", fromMethod)
             if (fromMethod === SIgnINMethod.PASSWORD) {
-                const token =  await this.generateAuthOtpToken(details.email)
+                const token = await this.generateAuthOtpToken(details.email)
                 console.log("Gen token ios ", token)
                 return token
             }

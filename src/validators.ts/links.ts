@@ -10,15 +10,15 @@ export class links {
     static addLinks = z.object({
         body: z.array(
             z.object({
-                type: z.string(),
-                url: z.string().url(),
+                field: z.string(),
+                value: z.string().url(),
             }).superRefine((data, ctx) => {
-                const pattern = platformRegexMap[data.type];
-                if (pattern && !pattern.test(data.url)) {
+                const pattern = platformRegexMap[data.field];
+                if (pattern && !pattern.test(data.value)) {
                     ctx.addIssue({
                         path: ['url'],
                         code: z.ZodIssueCode.custom,
-                        message: `Invalid ${data.type} URL format.`,
+                        message: `Invalid ${data.value} URL format.`,
                     });
                 }
             })

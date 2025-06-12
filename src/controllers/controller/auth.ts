@@ -28,7 +28,7 @@ export class auth {
     static register: any = async (req: Request, res: Response) => {
         try {
             const { email, password, userName, name } = req.body;
-            if (!email || !name || userName || !password) {
+            if (!email || !name || !userName || !password) {
                 throw new Error("All fields Email, name, username, password is required")
             }
             const user = await services.auth.register(
