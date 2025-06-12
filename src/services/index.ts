@@ -1,7 +1,9 @@
 import { auth } from "./dbservices/auth"
+import { link } from "./dbservices/link"
 
 const services = {
-    auth
+    auth,
+    link
 }
 
 export default services;

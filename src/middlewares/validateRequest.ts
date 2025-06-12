@@ -48,7 +48,7 @@ export const authMiddleware: any = (
             throwError(ErrorTypes.INVALID_TOKEN);
         }
         console.log('Decoded is >>>> ', decoded);
-        req["user"] = decoded.payload.userId;
+        req["user"] = decoded.payload;
         next();
     } catch (error) {
         return handleError(res, error);

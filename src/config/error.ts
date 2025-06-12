@@ -80,10 +80,10 @@ export const handleError = (res: Response, err: unknown) => {
         return errorResponse(res, err.status, err.message);
     } else if (err instanceof Error) {
         logger.error(err.message, err)
-        return errorResponse(res, 500, err.message);
+        return errorResponse(res, 400, err.message);
     } else {
-        logger.error("Internal Server Error", err)
-        return errorResponse(res, 500, "Internal Server Error");
+        logger.error("Internal Error", err)
+        return errorResponse(res, 401, "Internal Server Error");
     }
 };
 
