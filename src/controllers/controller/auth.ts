@@ -17,7 +17,7 @@ export class auth {
         try {
             const { email, password } = req.body;
             console.log("Request body is ", req.body)
-            const user = await services.auth.login(email, password);
+            const user = await services.auth.loginWithPassword(email, password);
             if (!user) throwError(ErrorTypes.USER_NOT_VERIFIED)
             return successResponse(res, 200, "User logged in successfully!", user)
         } catch (error) {
@@ -27,9 +27,12 @@ export class auth {
 
     static register: any = async (req: Request, res: Response) => {
         try {
-            const { email, password, userName } = req.body;
+            const { email, password, userName, name } = req.body;
+            if (!email || !name || userName || !password) {
+                throw new Error("All fields Email, name, username, password is required")
+            }
             const user = await services.auth.register(
-                { email, password, userName },
+                { email, password, userName, name },
                 SIgnINMethod.PASSWORD
             );
             return successResponse(res, 200, "User registered Successfully!", user)
@@ -73,7 +76,7 @@ export class auth {
             return res.status(200).send({
                 status: true,
                 message: "Otp Verified Successfully",
-                data: userData
+                data: services.auth.userDetails(userData)
             })
         } catch (error) {
             return res.status(500).send({ status: false, message: error.message });

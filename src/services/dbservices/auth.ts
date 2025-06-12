@@ -24,7 +24,7 @@ export class auth {
         return user;
     }
 
-    static login = async (email: string, password: string) => {
+    static loginWithPassword = async (email: string, password: string) => {
         const user = await this.getUserByEmail(email)
         if (!user.password) {
             throwError(ErrorTypes.PASSWORD_NOT_FOUND)
@@ -49,10 +49,9 @@ export class auth {
                 .onConflictDoNothing({ target: users.email })
                 .returning({
                     id: users.id,
+                    name : users.name,
                     userName: users.userName,
                     email: users.email,
-                    signMethod: users.signMethod,
-                    isVerified: users.isVerified
                 });
         } catch (error) {
             throw new Error(error);
@@ -60,13 +59,12 @@ export class auth {
     };
 
     static userDetails = (users: UsersModal) => {
-        if (!users.isVerified) return null
         const Token = generateAuthTokens({ userId: users.id });
         return {
             userId: users.id,
             email: users.email,
             userName: users.userName,
-            signMethod: users.signMethod,
+            name : users.name,
             token: Token,
         };
     };
@@ -82,8 +80,11 @@ export class auth {
 
             const registerUser = await this.insertUser(details, tx, fromMethod);
             if (registerUser.length <= 0) throwError(ErrorTypes.USER_ALREADY_EXISTS);
+            console.log("Sign method password ", fromMethod)
             if (fromMethod === SIgnINMethod.PASSWORD) {
-                const email = details.email
+                const token =  await this.generateAuthOtpToken(details.email)
+                console.log("Gen token ios ", token)
+                return token
             }
             return this.userDetails(registerUser[0]);
         });
@@ -95,13 +96,7 @@ export class auth {
             const findUser = await postgreDb.query.users.findFirst({
                 where: eq(users.email, email),
             })
-
-            if (findUser)
-                return this.userDetails(findUser);
-
-            else
-                return null;
-
+            return findUser ? this.userDetails(findUser) : null
         } catch (error) {
             throw new Error(error.message);
         }
