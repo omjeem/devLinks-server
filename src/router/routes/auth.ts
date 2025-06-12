@@ -8,7 +8,7 @@ const authRouter = express.Router()
 authRouter.post("/login", validateRequest(validators.auth.login), controllers.auth.login)
 authRouter.post("/register", controllers.auth.register)
 authRouter.get("/google", controllers.auth.googleSignInSignUp)
-authRouter.get("/otp", controllers.auth.getOtp)
-authRouter.post("/otp", controllers.auth.verifyOtp)
+authRouter.post("/get-otp", controllers.auth.getOtp)
+authRouter.post("/verify-otp", controllers.auth.verifyOtp)
 
 export default authRouter;

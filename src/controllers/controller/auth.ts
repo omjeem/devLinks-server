@@ -47,39 +47,27 @@ export class auth {
             const otp = req.body.otp
             const token = req.body.token
             if (!token || !otp) {
-                return res.status(400).send({
-                    status: false,
-                    message: "Otp And Token is required"
-                })
+                throw new Error("Otp And Token is required")
             }
             const decodeToken = verifyOtpToken(token)
             const hash = decodeToken.otp
             const email = decodeToken.email
             const verify = verifyOtpHash(hash, email, otp)
             if (!verify) {
-                return res.status(400).send({
-                    status: false,
-                    message: "OOps! You send the wrong otp"
-                })
+                throw new Error("OOps! You send the wrong otp")
             }
             const userData = await services.auth.getUserByEmail(email)
             if (!userData) {
-                return res.status(404).send({
-                    status: false,
-                    message: "User not exists"
-                })
+                throw new Error("User not exists")
             }
             if (!userData.isVerified) {
                 await services.auth.setUserVerified(userData.id)
                 userData.isVerified = true
             }
-            return res.status(200).send({
-                status: true,
-                message: "Otp Verified Successfully",
-                data: services.auth.userDetails(userData)
-            })
+            const userDataResponse = services.auth.userDetails(userData)
+            return successResponse(res, 200, "Otp Verified Successfully", userDataResponse)
         } catch (error) {
-            return res.status(500).send({ status: false, message: error.message });
+            return handleError(res, error)
         }
     }
 
@@ -87,7 +75,7 @@ export class auth {
 
     static getOtp: any = async (req: Request, res: Response) => {
         try {
-            const email: string = String(req.query.email)
+            const email: string = String(req.body.email)
             if (!email || !isValidEmail(email)) {
                 return res.status(400).send({ status: false, message: "Email is required and should valid" });
             }
@@ -105,6 +93,13 @@ export class auth {
             return res.status(500).send({ status: false, message: error.message });
         }
     }
+
+    static generateUserName(name: string): string {
+        const sanitized = name.replace(/\s+/g, ''); // Remove all whitespace
+        const randomSuffix = Math.random().toFixed(4).slice(2); // 4-digit random number
+        return `${sanitized}-${randomSuffix}`;
+    }
+
 
     static googleSignInSignUp: any = async (req: Request, res: Response) => {
         try {
@@ -137,13 +132,15 @@ export class auth {
                     console.error(`Failed to fetch user`);
                     throw new Error(error.message);
                 });
+            console.log("Picture is >>>>>>>>>>>>> ", picture)
             if (!email) throwError(ErrorTypes.EMAIL_NOT_FOUND);
 
             let user = await services.auth.loginThroughMethod(email);
             if (!user) {
                 const createBody = {
                     email: email,
-                    userName: name
+                    name: name,
+                    userName: `${this.generateUserName(name)}`
                 };
                 user = await services.auth.register(createBody, SIgnINMethod.GOOGLE);
             }
