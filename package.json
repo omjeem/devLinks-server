@@ -1,0 +1,49 @@
+{
+  "name": "dev-links-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "cross-env NODE_ENV=production node ./dist/src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec npx ts-node src/index.ts ",
+    "migration:generate": "drizzle-kit generate",
+    "migration:push": "node -r esbuild-register src/config/migrate.ts",
+    "migration:drop": "drizzle-kit drop"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.812.0",
+    "axios": "^1.9.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "drizzle-kit": "^0.28.1",
+    "drizzle-orm": "^0.36.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
+    "nodemailer": "^7.0.3",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.16.0",
+    "winston": "^3.17.0",
+    "zod": "^3.25.56"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.18",
+    "@types/nodemailer": "^6.4.17",
+    "@types/pg": "^8.15.2",
+    "@types/uuid": "^10.0.0"
+  }
+}
