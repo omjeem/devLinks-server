@@ -57,7 +57,7 @@ export class auth {
                     email: users.email,
                 });
         } catch (error) {
-            throw new Error(error);
+            throw new Error("User name already exists! Please try another one")
         }
     };
 

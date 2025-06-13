@@ -5,7 +5,7 @@ const platformRegexMap: Record<string, RegExp> = {
     Linkedin: /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+\/?$/,
     Facebook: /^https:\/\/(www\.)?facebook\.com\/[A-Za-z0-9_.-]+\/?$/,
     Youtube: /^https:\/\/(www\.)?youtube\.com\/(channel|c|user)\/[A-Za-z0-9_-]+\/?$/,
-    Twitter: /^https:\/\/(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/,
+    Twitter: /^https:\/\/(www\.)?x\.com\/[A-Za-z0-9_]+\/?$/,
     Instagram: /^https:\/\/(www\.)?instagram\.com\/[A-Za-z0-9_.]+\/?$/
 };
 
