@@ -27,9 +27,6 @@ export const emailTemplateForOTP = (otp: number) => `
   <p style="font-size: 32px; font-weight: bold; color: #0078d4; margin: 20px 0;">${otp}</p>
   <p style="font-size: 16px; color: #555;">This OTP is valid for <strong>10 minutes</strong>.</p>
   <p style="font-size: 14px; color: #777;">If you didn't request this code, you can safely ignore this email.</p>
-  <div style="margin-top: 20px;">
-    <img src="https://ik.imagekit.io/omjeem/signLogo.png" alt="NW Logo" style="width: 100px; height: 150px;">
-  </div>
 </div>
 `;
 
